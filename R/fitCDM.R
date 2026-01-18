@@ -143,12 +143,15 @@ fitCDM <- function(x, z, connect=NULL,
 
   # print(ssSamples)
 
+  beta.sims <- t(apply(ssSamples$beta, c(1,2), mean))
+  colnames(beta.sims) <- paste0("beta.", 1:ncol(beta.sims))
+  ymax.sims <- t(apply(ssSamples$ymax, c(1,2), mean))
+  colnames(ymax.sims) <- paste0("ymax.", 1:ncol(ymax.sims))
+  sigma.sims <- t(apply(ssSamples$sigma, c(1,2), mean))
+  tau.sims <- t(apply(ssSamples$tau, c(1,2), mean))
 
-  ssGibbs.jags <- data.frame(beta=t(apply(ssSamples$beta, c(1,2), mean)),
-                             ymax=t(apply(ssSamples$ymax, c(1,2), mean)),
-                             sigma=t(apply(ssSamples$sigma, c(1,2), mean)),
-                             tau=t(apply(ssSamples$tau, c(1,2), mean))
-  )
+  ssGibbs.jags <- data.frame(beta.sims, ymax.sims, sigma.sims, tau.sims)
+  
   latentGibbs <- NULL
   if(calcLatentGibbs) latentGibbs <- t(apply(ssSamples$y, c(1,2), mean))
   zpred <- t(apply(ssSamples$zpred, c(1,2), mean))
